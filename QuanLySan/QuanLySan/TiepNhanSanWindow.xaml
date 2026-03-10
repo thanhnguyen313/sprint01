@@ -221,16 +221,13 @@
                         <!-- Đơn giá -->
                         <StackPanel Grid.Column="6">
                             <TextBlock Text="Đơn giá" Style="{StaticResource FieldLabel}"/>
-                            <TextBox x:Name="txtDonGia" Style="{StaticResource SimpleTextBox}"/>
+                            <TextBox x:Name="txtDonGia" Style="{StaticResource SimpleTextBox}" IsEnabled="False"/>
                         </StackPanel>
                     </Grid>
 
-                    <!-- ── BUTTON: Thêm giá / Xóa dòng ── -->
+                    <!-- ── BUTTON: Xóa dòng ── -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                        <Button Content="＋ Thêm giá"
-                                Style="{StaticResource SimpleButton}"
-                                Click="BtnThemGia_Click"/>
-                        <Button Content="✕ Xóa dòng"
+                        <Button Content="Lưu"
                                 Style="{StaticResource SimpleButton}"
                                 Margin="8,0,0,0"
                                 Click="BtnXoaDongGia_Click"/>
@@ -256,7 +253,7 @@
 
                     <!-- ── FOOTER BUTTONS ── -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="Lưu"
+                        <Button Content="✕ Xóa dòng"
                                 Style="{StaticResource SimpleButton}"
                                 Click="BtnLuu_Click"/>
                         <Button Content="Làm mới"
