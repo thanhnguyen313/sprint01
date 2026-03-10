@@ -225,8 +225,12 @@
                         </StackPanel>
                     </Grid>
 
-                    <!-- ── BUTTON: Xóa dòng ── -->
+                    <!-- ── BUTTON: Tìm sân, Lưu ── -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                        <Button Content="Tìm sân"
+                        Style="{StaticResource SimpleButton}"
+                                Margin="8,0,0,0"
+                                Click="BtnXoaDongGia_Click"/>
                         <Button Content="Lưu"
                                 Style="{StaticResource SimpleButton}"
                                 Margin="8,0,0,0"
