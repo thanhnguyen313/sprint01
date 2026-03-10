@@ -1,0 +1,348 @@
+<Window x:Class="QuanLySan.TiepNhanSanWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Tiếp nhận sân"
+        Width="750" Height="720"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <!-- ===== COLOR PALETTE ===== -->
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#1B2A4A"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#F0C040"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#1B2A4A"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#888888"/>
+        <SolidColorBrush x:Key="InputBorder" Color="#D0D0D0"/>
+        <SolidColorBrush x:Key="InputBackground" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ButtonSuccess" Color="#28A745"/>
+        <SolidColorBrush x:Key="ButtonDanger" Color="#DC3545"/>
+        <SolidColorBrush x:Key="ButtonWarning" Color="#FFC107"/>
+        <SolidColorBrush x:Key="ButtonInfo" Color="#17A2B8"/>
+
+        <!-- ===== ROUNDED TEXTBOX STYLE ===== -->
+        <Style x:Key="RoundedTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="18">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== ROUNDED COMBOBOX STYLE ===== -->
+        <Style x:Key="RoundedComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- ===== LABEL STYLE ===== -->
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <!-- ===== ACCENT LABEL (yellow) ===== -->
+        <Style x:Key="AccentLabel" TargetType="TextBlock" BasedOn="{StaticResource FieldLabel}">
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+        </Style>
+
+        <!-- ===== BUTTON BASE STYLE ===== -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="18"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== DATAGRID STYLE ===== -->
+        <Style x:Key="StyledDataGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowHeight" Value="32"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+        </Style>
+
+        <Style x:Key="DataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="BorderBrush" Value="#2A3E6A"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="8" Background="White"
+            Margin="0" ClipToBounds="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ===== HEADER BAR ===== -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource PrimaryBrush}"
+                    Padding="20,14">
+                <Grid>
+                    <TextBlock Text="Tiếp nhận sân"
+                               FontSize="20" FontWeight="Bold"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                    <Button Content="✕"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            FontSize="18" FontWeight="Bold"
+                            Foreground="White"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="BtnClose_Click"
+                            Width="30" Height="30"/>
+                </Grid>
+            </Border>
+
+            <!-- ===== CONTENT ===== -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="24,16,24,20">
+                <StackPanel>
+
+                    <!-- ── ROW 1: Tên sân | Loại sân | Địa chỉ ── -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Tên sân -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Tên sân" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="txtTenSan" Style="{StaticResource RoundedTextBox}"/>
+                        </StackPanel>
+
+                        <!-- Loại sân -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Loại sân" Style="{StaticResource AccentLabel}"/>
+                            <ComboBox x:Name="cboLoaiSan" Style="{StaticResource RoundedComboBox}"
+                                      DisplayMemberPath="TenLoaiSan"/>
+                        </StackPanel>
+
+                        <!-- Địa chỉ -->
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Địa chỉ" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="txtDiaChi" Style="{StaticResource RoundedTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- ── ROW 2: Ghi chú | Tình trạng ── -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Ghi chú -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Ghi chú" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="txtGhiChu" Style="{StaticResource RoundedTextBox}"/>
+                        </StackPanel>
+
+                        <!-- Tình trạng -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Tình trạng" Style="{StaticResource AccentLabel}"/>
+                            <ComboBox x:Name="cboTinhTrang" Style="{StaticResource RoundedComboBox}"
+                                      DisplayMemberPath="TenTinhTrang"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- ── SEPARATOR ── -->
+                    <Border Height="1" Background="#E0E0E0" Margin="0,4,0,14"/>
+
+                    <!-- ── SECTION: Bảng giá theo loại ngày ── -->
+                    <TextBlock Text="Bảng giá theo loại ngày"
+                               FontSize="15" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimary}"
+                               Margin="0,0,0,10"/>
+
+                    <!-- ── ROW 3: Giờ bắt đầu | Giờ kết thúc | Loại ngày | Đơn giá ── -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Giờ bắt đầu -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Giờ bắt đầu" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="txtGioBatDau"
+                                     Style="{StaticResource RoundedTextBox}"
+                                     Text="07:00"/>
+                        </StackPanel>
+
+                        <!-- Giờ kết thúc -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Giờ kết thúc" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="txtGioKetThuc"
+                                     Style="{StaticResource RoundedTextBox}"
+                                     Text="22:00"/>
+                        </StackPanel>
+
+                        <!-- Loại ngày -->
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Loại ngày" Style="{StaticResource AccentLabel}"/>
+                            <ComboBox x:Name="cboLoaiNgay" Style="{StaticResource RoundedComboBox}"
+                                      DisplayMemberPath="TenLoaiNgay"/>
+                        </StackPanel>
+
+                        <!-- Đơn giá -->
+                        <StackPanel Grid.Column="6">
+                            <TextBlock Text="Đơn giá" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="txtDonGia" Style="{StaticResource RoundedTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- ── BUTTON: Thêm giá ── -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                        <Button Content="＋ Thêm giá"
+                                Background="{StaticResource ButtonInfo}"
+                                Style="{StaticResource ActionButton}"
+                                Click="BtnThemGia_Click"/>
+                        <Button Content="✕ Xóa dòng"
+                                Background="{StaticResource ButtonDanger}"
+                                Style="{StaticResource ActionButton}"
+                                Margin="8,0,0,0"
+                                Click="BtnXoaDongGia_Click"/>
+                    </StackPanel>
+
+                    <!-- ── DATAGRID: Danh sách giá ── -->
+                    <DataGrid x:Name="dgBangGia"
+                              Style="{StaticResource StyledDataGrid}"
+                              ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
+                              Height="160"
+                              Margin="0,0,0,16">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="STT" Binding="{Binding STT}" Width="50"/>
+                            <DataGridTextColumn Header="Giờ bắt đầu" Binding="{Binding GioBatDau}" Width="*"/>
+                            <DataGridTextColumn Header="Giờ kết thúc" Binding="{Binding GioKetThuc}" Width="*"/>
+                            <DataGridTextColumn Header="Loại ngày" Binding="{Binding LoaiNgay}" Width="*"/>
+                            <DataGridTextColumn Header="Đơn giá" Binding="{Binding DonGia, StringFormat=N0}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- ── SEPARATOR ── -->
+                    <Border Height="1" Background="#E0E0E0" Margin="0,0,0,16"/>
+
+                    <!-- ── FOOTER BUTTONS ── -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left side info -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="(*)" Foreground="{StaticResource AccentBrush}"
+                                       FontWeight="Bold" FontSize="12"/>
+                            <TextBlock Text=" Thông tin lấy từ hồ sơ, sổ sách"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       FontSize="12" FontStyle="Italic"/>
+                        </StackPanel>
+
+                        <!-- Action buttons -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Content="💾 Lưu"
+                                    Background="{StaticResource ButtonSuccess}"
+                                    Style="{StaticResource ActionButton}"
+                                    Click="BtnLuu_Click"/>
+                            <Button Content="🔄 Làm mới"
+                                    Background="{StaticResource ButtonWarning}"
+                                    Style="{StaticResource ActionButton}"
+                                    Margin="8,0,0,0"
+                                    Click="BtnLamMoi_Click"/>
+                            <Button Content="❌ Đóng"
+                                    Background="{StaticResource ButtonDanger}"
+                                    Style="{StaticResource ActionButton}"
+                                    Margin="8,0,0,0"
+                                    Click="BtnClose_Click"/>
+                        </StackPanel>
+                    </Grid>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>
