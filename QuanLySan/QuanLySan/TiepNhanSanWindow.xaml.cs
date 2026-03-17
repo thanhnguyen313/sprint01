@@ -144,31 +144,10 @@ namespace QuanLySan
             }
         }
 
-        // ── Làm mới: xóa toàn bộ form ──
-        private void BtnLamMoi_Click(object sender, RoutedEventArgs e)
-        {
-            txtTenSan.Text = "";
-            cboLoaiSan.SelectedIndex = -1;
-            txtDiaChi.Text = "";
-            txtGhiChu.Text = "";
-            cboTinhTrang.SelectedIndex = -1;
-
-            txtGioBatDau.Text = "";
-            txtGioKetThuc.Text = "";
-            cboLoaiNgay.SelectedIndex = -1;
-            txtDonGia.Text = "";
-
-            _dsBangGia.Clear();
-        }
-
         // ── Đóng cửa sổ ──
-        private void BtnDong_Click(object sender, RoutedEventArgs e) => this.Close();
         private void BtnClose_Click(object sender, RoutedEventArgs e) => this.Close();
 
-        // Các handler chưa triển khai – placeholder
-        private void BtnLuu_Click(object sender, RoutedEventArgs e) { }
-        private void BtnTimSan_Click(object sender, RoutedEventArgs e) { }
+        // Placeholder
         private void BtnLuuGia_Click(object sender, RoutedEventArgs e) { }
     }
 }
-
