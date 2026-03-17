@@ -173,83 +173,87 @@
                         </StackPanel>
                     </Grid>
 
-                    <!-- ── SEPARATOR ── -->
-                    <Border Height="1" Background="#D0D0D0" Margin="0,4,0,12"/>
+                    <!-- ══════════════════════════════════════════════ -->
+                    <!-- ── GROUPBOX: Chi tiết bảng giá (1 thực thể) ── -->
+                    <!-- ══════════════════════════════════════════════ -->
+                    <GroupBox Margin="0,8,0,16"
+                              Padding="12,8,12,12"
+                              BorderBrush="{StaticResource PrimaryBrush}"
+                              BorderThickness="1.5">
+                        <GroupBox.Header>
+                            <TextBlock Text="  Bảng giá theo loại ngày  "
+                                       FontSize="14" FontWeight="Bold"
+                                       Foreground="{StaticResource PrimaryBrush}"/>
+                        </GroupBox.Header>
 
-                    <!-- ── SECTION: Bảng giá theo loại ngày ── -->
-                    <TextBlock Text="Bảng giá theo loại ngày"
-                               FontSize="14" FontWeight="Bold"
-                               Foreground="{StaticResource TextPrimary}"
-                               Margin="0,0,0,10"/>
+                        <StackPanel>
+                            <!-- ── ROW: Giờ bắt đầu | Giờ kết thúc | Loại ngày | Đơn giá ── -->
+                            <Grid Margin="0,4,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                    <!-- ── ROW 3: Giờ bắt đầu | Giờ kết thúc | Loại ngày | Đơn giá ── -->
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                                <!-- Giờ bắt đầu -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Giờ bắt đầu" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox x:Name="txtGioBatDau"
+                                             Style="{StaticResource SimpleTextBox}"
+                                             Text="07:00"/>
+                                </StackPanel>
 
-                        <!-- Giờ bắt đầu -->
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Giờ bắt đầu" Style="{StaticResource FieldLabel}"/>
-                            <TextBox x:Name="txtGioBatDau"
-                                     Style="{StaticResource SimpleTextBox}"
-                                     Text="07:00"/>
+                                <!-- Giờ kết thúc -->
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Giờ kết thúc" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox x:Name="txtGioKetThuc"
+                                             Style="{StaticResource SimpleTextBox}"
+                                             Text="22:00"/>
+                                </StackPanel>
+
+                                <!-- Loại ngày -->
+                                <StackPanel Grid.Column="4">
+                                    <TextBlock Text="Loại ngày" Style="{StaticResource FieldLabel}"/>
+                                    <ComboBox x:Name="cboLoaiNgay" Style="{StaticResource SimpleComboBox}" SelectionChanged="CboLoaiNgay_SelectionChanged"/>
+                                </StackPanel>
+
+                                <!-- Đơn giá -->
+                                <StackPanel Grid.Column="6">
+                                    <TextBlock Text="Đơn giá" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox x:Name="txtDonGia" Style="{StaticResource SimpleTextBox}" IsReadOnly="True" Background="#F0F0F0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- ── BUTTONS: Thêm / Xóa dòng ── -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                                <Button x:Name="btnThemGia" Content="Thêm" Style="{StaticResource SimpleButton}" Margin="0,0,8,0" Click="BtnThemGia_Click"/>
+                                <Button x:Name="btnXoaDong" Content="Xóa dòng" Style="{StaticResource SimpleButton}" Click="BtnXoaDongGia_Click"/>
+                            </StackPanel>
+
+                            <!-- ── DATAGRID: Danh sách giá ── -->
+                            <DataGrid x:Name="dgBangGia"
+                                      Style="{StaticResource StyledDataGrid}"
+                                      ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
+                                      Height="160">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="STT" Binding="{Binding STT}" Width="50"/>
+                                    <DataGridTextColumn Header="Giờ bắt đầu" Binding="{Binding GioBatDau}" Width="*"/>
+                                    <DataGridTextColumn Header="Giờ kết thúc" Binding="{Binding GioKetThuc}" Width="*"/>
+                                    <DataGridTextColumn Header="Loại ngày" Binding="{Binding LoaiNgay}" Width="*"/>
+                                    <DataGridTextColumn Header="Đơn giá" Binding="{Binding DonGia, StringFormat=N0}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </StackPanel>
-
-                        <!-- Giờ kết thúc -->
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Giờ kết thúc" Style="{StaticResource FieldLabel}"/>
-                            <TextBox x:Name="txtGioKetThuc"
-                                     Style="{StaticResource SimpleTextBox}"
-                                     Text="22:00"/>
-                        </StackPanel>
-
-                        <!-- Loại ngày -->
-                        <StackPanel Grid.Column="4">
-                            <TextBlock Text="Loại ngày" Style="{StaticResource FieldLabel}"/>
-                            <ComboBox x:Name="cboLoaiNgay" Style="{StaticResource SimpleComboBox}"/>
-                        </StackPanel>
-
-                        <!-- Đơn giá -->
-                        <StackPanel Grid.Column="6">
-                            <TextBlock Text="Đơn giá" Style="{StaticResource FieldLabel}"/>
-                            <TextBox x:Name="txtDonGia" Style="{StaticResource SimpleTextBox}" IsEnabled="False"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <!-- ── BUTTON: Tìm sân, Lưu ── -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                        <Button x:Name="btnTimSan" Content="Tìm sân" Style="{StaticResource SimpleButton}" Margin="0,0,8,0" Click="BtnTimSan_Click"/>
-                        <Button x:Name="btnLuuGia" Content="Lưu" Style="{StaticResource SimpleButton}" Click="BtnLuuGia_Click"/>
-                    </StackPanel>
-
-                    <!-- ── DATAGRID: Danh sách giá ── -->
-                    <DataGrid x:Name="dgBangGia"
-                              Style="{StaticResource StyledDataGrid}"
-                              ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
-                              Height="160"
-                              Margin="0,0,0,16">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="STT" Binding="{Binding STT}" Width="50"/>
-                            <DataGridTextColumn Header="Giờ bắt đầu" Binding="{Binding GioBatDau}" Width="*"/>
-                            <DataGridTextColumn Header="Giờ kết thúc" Binding="{Binding GioKetThuc}" Width="*"/>
-                            <DataGridTextColumn Header="Loại ngày" Binding="{Binding LoaiNgay}" Width="*"/>
-                            <DataGridTextColumn Header="Đơn giá" Binding="{Binding DonGia, StringFormat=N0}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <!-- ── SEPARATOR ── -->
-                    <Border Height="1" Background="#D0D0D0" Margin="0,0,0,14"/>
+                    </GroupBox>
 
                     <!-- ── FOOTER BUTTONS ── -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
-                        <Button x:Name="btnXoaDong" Content="Xóa dòng" Style="{StaticResource SimpleButton}" Margin="0,0,12,0" Click="BtnXoaDongGia_Click"/>
+                        <Button x:Name="btnTimSan" Content="Tìm sân" Style="{StaticResource SimpleButton}" Margin="0,0,12,0" Click="BtnTimSan_Click"/>
+                        <Button x:Name="btnLuuGia" Content="Lưu" Style="{StaticResource SimpleButton}" Margin="0,0,12,0" Click="BtnLuuGia_Click"/>
                         <Button x:Name="btnLamMoi" Content="Làm mới" Style="{StaticResource SimpleButton}" Margin="0,0,12,0" Click="BtnLamMoi_Click"/>
                         <Button x:Name="btnDong" Content="Đóng" Style="{StaticResource SimpleButton}" Click="BtnDong_Click"/>
                     </StackPanel>
