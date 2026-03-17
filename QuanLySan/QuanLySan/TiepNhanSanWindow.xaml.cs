@@ -14,5 +14,9 @@ namespace QuanLySan
         private void BtnXoaDongGia_Click(object sender, RoutedEventArgs e) { }
         private void BtnLuu_Click(object sender, RoutedEventArgs e) { }
         private void BtnLamMoi_Click(object sender, RoutedEventArgs e) { }
+        private void BtnTimSan_Click(object sender, RoutedEventArgs e) { }
+        private void BtnLuuGia_Click(object sender, RoutedEventArgs e) { }
+        private void BtnDong_Click(object sender, RoutedEventArgs e) { }
     }
 }
+
