@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="QuanLySan.TiepNhanSanWindow"
         Title="Quản lí sân thể thao"
-        Width="750" Height="720"
+        Width="750" Height="575"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Background="White"
+        Background="Transparent"
         FontFamily="Segoe UI"
-        FontSize="13">
+        FontSize="13"
+        WindowStyle="None"
+        AllowsTransparency="True">
+        
 
     <Window.Resources>
         <!-- ===== COLOR PALETTE ===== -->
@@ -88,7 +91,7 @@
         </Style>
     </Window.Resources>
 
-    <Border Background="White" ClipToBounds="True">
+    <Border Background="White" ClipToBounds="True" CornerRadius="5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -98,7 +101,9 @@
             <!-- ===== HEADER BAR ===== -->
             <Border Grid.Row="0"
                     Background="{StaticResource PrimaryBrush}"
-                    Padding="20,12">
+                    Padding="20,12"
+                    MouseLeftButtonDown="Header_MouseLeftButtonDown"
+                    CornerRadius="5,5,0,0">
                 <Grid>
                     <TextBlock Text="Quản lí sân thể thao"
                                FontSize="18" FontWeight="Bold"
@@ -236,11 +241,10 @@
                                 </StackPanel>
                             </Grid>
 
-                            <!-- ── BUTTONS: Thêm / Xóa dòng / Lưu ── -->
+                            <!-- ── BUTTONS: Thêm / Xóa dòng  ── -->
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
                                 <Button x:Name="btnThemGia" Content="Thêm" Style="{StaticResource SimpleButton}" Margin="0,0,8,0" Click="BtnThemGia_Click"/>
                                 <Button x:Name="btnXoaDong" Content="Xóa dòng" Style="{StaticResource SimpleButton}" Margin="0,0,8,0" Click="BtnXoaDongGia_Click"/>
-                                <Button x:Name="btnLuuGia" Content="Lưu" Style="{StaticResource SimpleButton}" Click="BtnLuuGia_Click"/>
                             </StackPanel>
 
                             <!-- ── DATAGRID: Danh sách giá ── -->
@@ -259,7 +263,18 @@
                         </StackPanel>
                     </GroupBox>
 
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                        <Button x:Name="btnHuy" Content="Hủy bỏ" 
+                                Style="{StaticResource SimpleButton}" 
+                                Margin="0,0,12,0" 
+                                Click="BtnClose_Click"/>
 
+                        <Button x:Name="btnLuu" Content="Lưu thông tin" 
+                                Style="{StaticResource SimpleButton}" 
+                                Background="{StaticResource PrimaryBrush}" 
+                                Foreground="White" FontWeight="Bold" Width="120"
+                                Click="BtnLuu_Click"/>
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

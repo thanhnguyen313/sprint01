@@ -147,7 +147,16 @@ namespace QuanLySan
         // ── Đóng cửa sổ ──
         private void BtnClose_Click(object sender, RoutedEventArgs e) => this.Close();
 
+        // ── Di chuyển cửa sổ khi nắm thanh Header ──
+        private void Header_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
         // Placeholder
-        private void BtnLuuGia_Click(object sender, RoutedEventArgs e) { }
+        private void BtnLuu_Click(object sender, RoutedEventArgs e) { }
     }
 }
