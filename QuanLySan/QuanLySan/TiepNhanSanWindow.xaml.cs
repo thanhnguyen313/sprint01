@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -13,9 +14,21 @@ namespace QuanLySan
     /// </summary>
     public class GioSanItem : INotifyPropertyChanged
     {
+        // Bảng đơn giá theo loại ngày (Quy định 1)
+        public static readonly Dictionary<string, decimal> BangDonGia = new()
+        {
+            { "Thường",   50_000 },
+            { "Cuối tuần", 70_000 },
+            { "Lễ",       100_000 }
+        };
+
+        // Danh sách loại ngày cho ComboBox
+        public static readonly List<string> DsLoaiNgay = new() { "Thường", "Cuối tuần", "Lễ" };
+
         private int _stt;
         private string _gioBatDau = "";
         private string _gioKetThuc = "";
+        private string _loaiNgay = "";
         private decimal _donGia;
 
         public int STT
@@ -34,6 +47,21 @@ namespace QuanLySan
         {
             get => _gioKetThuc;
             set { _gioKetThuc = value; OnPropertyChanged(); }
+        }
+
+        public string LoaiNgay
+        {
+            get => _loaiNgay;
+            set
+            {
+                _loaiNgay = value;
+                OnPropertyChanged();
+                // Tự động cập nhật đơn giá theo loại ngày
+                if (!string.IsNullOrEmpty(value) && BangDonGia.ContainsKey(value))
+                {
+                    DonGia = BangDonGia[value];
+                }
+            }
         }
 
         public decimal DonGia
