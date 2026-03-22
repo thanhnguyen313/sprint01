@@ -142,9 +142,7 @@
                         <StackPanel Grid.Column="0">
                             <TextBlock Style="{StaticResource FieldLabel}">
                                 <Run Text="Mã sân"/>
-                                <Run Text="  &lt;giá trị phát sinh&gt;" 
-                                     FontWeight="Normal" FontStyle="Italic"
-                                     Foreground="{StaticResource HintText}" FontSize="11"/>
+         
                             </TextBlock>
                             <TextBox x:Name="txtMaSan" Style="{StaticResource SimpleTextBox}" IsReadOnly="True" Background="#F0F0F0"/>
                         </StackPanel>
