@@ -57,11 +57,61 @@ namespace QuanLySan
             InitializeComponent();
 
             // Load dữ liệu ComboBox
-            cboLoaiSan.ItemsSource = new[] { "Sân bóng đá", "Sân cầu lông", "Sân pickleball" };
+            cboMaLoaiSan.ItemsSource = new[] { "Sân bóng đá", "Sân cầu lông", "Sân pickleball" };
             cboTinhTrang.ItemsSource = new[] { "Hoạt động", "Bảo trì" };
 
             dgGioSan.ItemsSource = _dsGioSan;
         }
+
+        // ── Thêm sân mới (nút "Thêm") ──
+        private void BtnThemSan_Click(object sender, RoutedEventArgs e)
+        {
+            // Validate bắt buộc
+            if (string.IsNullOrWhiteSpace(txtTenSan.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên sân.", "Thiếu thông tin",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                txtTenSan.Focus();
+                return;
+            }
+
+            if (cboMaLoaiSan.SelectedIndex < 0)
+            {
+                MessageBox.Show("Vui lòng chọn loại sân.", "Thiếu thông tin",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDiaChi.Text))
+            {
+                MessageBox.Show("Vui lòng nhập địa chỉ.", "Thiếu thông tin",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                txtDiaChi.Focus();
+                return;
+            }
+
+            // Phát sinh mã sân (tạm thời dùng GUID ngắn)
+            string maSan = "SAN" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            txtMaSan.Text = maSan;
+
+            MessageBox.Show($"Đã thêm sân \"{txtTenSan.Text}\" thành công!\nMã sân: {maSan}",
+                "Thêm sân", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        // ── Hủy / Xóa trắng form ──
+        private void BtnHuy_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Bạn có muốn xóa trắng toàn bộ dữ liệu đã nhập?",
+                "Xác nhận hủy", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearForm();
+            }
+        }
+
+        // ── Thoát / Đóng cửa sổ ──
+        private void BtnThoat_Click(object sender, RoutedEventArgs e) => this.Close();
 
         // ── Thêm 1 dòng trống vào grid để user nhập ──
         private void BtnThemGio_Click(object sender, RoutedEventArgs e)
@@ -143,8 +193,12 @@ namespace QuanLySan
             }
         }
 
-        // ── Đóng cửa sổ ──
-        private void BtnClose_Click(object sender, RoutedEventArgs e) => this.Close();
+        // ── Lưu (placeholder) ──
+        private void BtnLuu_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Chức năng lưu đang được phát triển.",
+                "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         // ── Di chuyển cửa sổ khi nắm thanh Header ──
         private void Header_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -155,7 +209,16 @@ namespace QuanLySan
             }
         }
 
-        // Placeholder
-        private void BtnLuu_Click(object sender, RoutedEventArgs e) { }
+        // ── Helper: Xóa trắng toàn bộ form ──
+        private void ClearForm()
+        {
+            txtMaSan.Text = "";
+            txtTenSan.Text = "";
+            cboMaLoaiSan.SelectedIndex = -1;
+            txtDiaChi.Text = "";
+            txtGhiChu.Text = "";
+            cboTinhTrang.SelectedIndex = -1;
+            _dsGioSan.Clear();
+        }
     }
 }
