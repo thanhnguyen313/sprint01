@@ -157,6 +157,52 @@ namespace QuanLySan
         }
 
         // Placeholder
-        private void BtnLuu_Click(object sender, RoutedEventArgs e) { }
+        private void BtnLuu_Click(object sender, RoutedEventArgs e) {
+            // Bước 1: Kiểm tra tính đầy đủ của thông tin Sân
+            if (string.IsNullOrWhiteSpace(txtTenSan.Text) ||
+                cboLoaiSan.SelectedIndex < 0 ||
+                cboTinhTrang.SelectedIndex < 0 ||
+                string.IsNullOrWhiteSpace(txtDiaChi.Text))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin Sân (Tên, Loại, Địa chỉ, Tình trạng).",
+                    "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Bước 2: Kiểm tra danh sách bảng giá
+            // Quy định: Phải có ít nhất một khung giờ giá cho sân mới
+            if (_dsBangGia.Count == 0)
+            {
+                MessageBox.Show("Vui lòng thêm ít nhất một khung giờ và đơn giá cho sân.",
+                    "Thiếu dữ liệu bảng giá", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Bước 3: Xác nhận với người dùng trước khi lưu
+            var confirm = MessageBox.Show("Bạn có chắc chắn muốn lưu thông tin sân này không?",
+                "Xác nhận lưu", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (confirm == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // Bước 4: Đóng gói dữ liệu vào Model (SanEntity)
+                    // Ở bước này, nếu bạn đã có Database, bạn sẽ gọi Service để Save.
+                    // Hiện tại, chúng ta sẽ mô phỏng việc lưu thành công.
+
+                    string maSanMoi = txtMaSan.Text; // Mã đã phát sinh ở nút "Thêm" hoặc phát sinh tại đây
+
+                    // Giả lập lưu dữ liệu:
+                    // _sanService.Save(new SanEntity { ... });
+
+                    MessageBox.Show($"Đã lưu thành công sân {txtTenSan.Text} vào hệ thống!",
+                        "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Có lỗi xảy ra khi lưu: {ex.Message}", "Lỗi hệ thống");
+                }
+            }
+        }
     }
 }
