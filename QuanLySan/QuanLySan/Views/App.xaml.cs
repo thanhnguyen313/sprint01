@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace QuanLySan
+namespace QuanLySan.Views
 {
     public partial class App : Application
     {

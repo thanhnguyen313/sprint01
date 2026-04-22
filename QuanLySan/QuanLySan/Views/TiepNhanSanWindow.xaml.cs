@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace QuanLySan
+namespace QuanLySan.Views
 {
     /// <summary>
     /// Model đại diện cho 1 dòng giờ sân trong DataGrid

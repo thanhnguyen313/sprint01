@@ -8,4 +8,12 @@
     <AssemblyName>QuanLySan</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Page Remove="Views\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="Views\App.xaml" />
+  </ItemGroup>
+
 </Project>
