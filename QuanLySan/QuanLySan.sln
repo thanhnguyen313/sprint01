@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuanLySan", "QuanLySan\Quan
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{2161C5C7-D381-41C8-B4A4-7640F627D9C7}"
 	ProjectSection(SolutionItems) = preProject
-		Database\SanTheThao.sql = Database\SanTheThao.sql
+		..\Database\SanTheThao.sql = ..\Database\SanTheThao.sql
 	EndProjectSection
 EndProject
 Global
