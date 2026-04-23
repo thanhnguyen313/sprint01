@@ -165,14 +165,15 @@ namespace QuanLySan.ViewModels
                         string maTinhTrang = _mapTinhTrang[TinhTrangSelected];
 
                         // Lưu vào bảng SAN (Chuẩn Database)
-                        string sqlSan = "INSERT INTO SAN (MaSan, TenSan, DiaChi, MaLoaiSan, MaTinhTrang) VALUES (@Ma, @Ten, @DC, @MLS, @MTT)";
+                        string sqlSan = "INSERT INTO SAN (MaSan, TenSan, DiaChi, GhiChu, MaLoaiSan, MaTinhTrang) VALUES (@Ma, @Ten, @DC, @GC, @MLS, @MTT)";
                         using (SqlCommand cmd = new SqlCommand(sqlSan, conn, trans))
                         {
                             cmd.Parameters.AddWithValue("@Ma", MaSan);
                             cmd.Parameters.AddWithValue("@Ten", TenSan);
-                            cmd.Parameters.AddWithValue("@DC", DiaChi);
-                            cmd.Parameters.AddWithValue("@MLS", maLoaiSan);
-                            cmd.Parameters.AddWithValue("@MTT", maTinhTrang);
+                            cmd.Parameters.AddWithValue("@DC", DiaChi ?? "");
+                            cmd.Parameters.AddWithValue("@GC", GhiChu ?? "");
+                            cmd.Parameters.AddWithValue("@MLS", _mapLoaiSan[LoaiSanSelected]);
+                            cmd.Parameters.AddWithValue("@MTT", _mapTinhTrang[TinhTrangSelected]);
                             cmd.ExecuteNonQuery();
                         }
 
