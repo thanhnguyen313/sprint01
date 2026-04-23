@@ -24,8 +24,10 @@ CREATE TABLE SAN
 	MaSan char(6) PRIMARY KEY, -- VD: BD0235
 	TenSan NVARCHAR(100),
 	DiaChi NVARCHAR(100),
+	GhiChu NVARCHAR(500),
 	MaLoaiSan char(2) references LOAISAN(MaLoaiSan),
-	MaTinhTrang char(2) references TINHTRANG(MaTinhTrang) ,
+	MaTinhTrang char(2) references TINHTRANG(MaTinhTrang),
+
 )
 
 CREATE TABLE CHITIETDATSAN
