@@ -12,7 +12,7 @@ namespace QuanLySan.ViewModels
 {
     public class TiepNhanSanViewModel : BaseViewModel
     {
-        private string _connectionString = @"Server=.\SQLEXPRESS;Database=QLSanTheThao;Trusted_Connection=True;TrustServerCertificate=True;";
+        private string _connectionString = @"Server= localhost;Database=QLSanTheThao;Trusted_Connection=True;TrustServerCertificate=True;";
 
         // Dữ liệu nhập liệu
         private string _maSan = "";
@@ -237,7 +237,7 @@ namespace QuanLySan.ViewModels
                             TryParseGio(item.GioBatDau, out TimeSpan gioBD);
                             TryParseGio(item.GioKetThuc, out TimeSpan gioKT);
 
-                            string sqlGio = "INSERT INTO CHITIET_GIO_SAN (MaSan, GioBatDau, GioKetThuc, MaLoaiNgay, DonGia) VALUES (@MaSan, @BD, @KT, @MLN, @Gia)";
+                            string sqlGio = "INSERT INTO CHITIETDATSAN (MaSan, GioBatDau, GioKetThuc, MaLoaiNgay, DonGia) VALUES (@MaSan, @BD, @KT, @MLN, @Gia)";
                             using (SqlCommand cmd = new SqlCommand(sqlGio, conn, trans))
                             {
                                 cmd.Parameters.AddWithValue("@MaSan", MaSan);
