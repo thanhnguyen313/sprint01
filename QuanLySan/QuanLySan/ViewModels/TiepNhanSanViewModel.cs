@@ -148,11 +148,63 @@ namespace QuanLySan.ViewModels
             PhatSinhMaSan();
         }
 
+        /// <summary>
+        /// Parse chuỗi giờ nhập vào thành TimeSpan hợp lệ (00:00 - 23:59).
+        /// Hỗ trợ cả format "HH:mm", "H:mm", "HH" hoặc số nguyên (giờ).
+        /// </summary>
+        private static bool TryParseGio(string input, out TimeSpan result)
+        {
+            result = TimeSpan.Zero;
+            if (string.IsNullOrWhiteSpace(input)) return false;
+
+            input = input.Trim();
+
+            // Nếu chỉ nhập số nguyên (VD: "5" → 05:00)
+            if (int.TryParse(input, out int gio) && gio >= 0 && gio <= 23)
+            {
+                result = new TimeSpan(gio, 0, 0);
+                return true;
+            }
+
+            // Parse format HH:mm hoặc H:mm
+            if (TimeSpan.TryParse(input, out TimeSpan ts) && ts >= TimeSpan.Zero && ts < TimeSpan.FromHours(24))
+            {
+                result = ts;
+                return true;
+            }
+
+            return false;
+        }
+
         private void ThucHienLuu()
         {
             if (string.IsNullOrWhiteSpace(TenSan)) { MessageBox.Show("Vui lòng nhập tên sân!"); return; }
             if (string.IsNullOrWhiteSpace(LoaiSanSelected)) { MessageBox.Show("Vui lòng chọn Mã loại sân!"); return; }
             if (string.IsNullOrWhiteSpace(TinhTrangSelected)) { MessageBox.Show("Vui lòng chọn Tình trạng!"); return; }
+
+            // Validate giờ sân trước khi lưu
+            for (int i = 0; i < DsGioSan.Count; i++)
+            {
+                var item = DsGioSan[i];
+                if (!TryParseGio(item.GioBatDau, out _))
+                {
+                    MessageBox.Show($"Dòng {i + 1}: Giờ bắt đầu \"{item.GioBatDau}\" không hợp lệ.\nVui lòng nhập theo định dạng HH:mm (VD: 07:00)",
+                        "Sai định dạng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (!TryParseGio(item.GioKetThuc, out _))
+                {
+                    MessageBox.Show($"Dòng {i + 1}: Giờ kết thúc \"{item.GioKetThuc}\" không hợp lệ.\nVui lòng nhập theo định dạng HH:mm (VD: 08:00)",
+                        "Sai định dạng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (string.IsNullOrEmpty(item.LoaiNgay))
+                {
+                    MessageBox.Show($"Dòng {i + 1}: Vui lòng chọn Loại ngày.",
+                        "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+            }
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
@@ -165,7 +217,7 @@ namespace QuanLySan.ViewModels
                         string maLoaiSan = _mapLoaiSan[LoaiSanSelected];
                         string maTinhTrang = _mapTinhTrang[TinhTrangSelected];
 
-                        // Lưu vào bảng SAN (Chuẩn Database)
+                        // Lưu vào bảng SAN
                         string sqlSan = "INSERT INTO SAN (MaSan, TenSan, DiaChi, GhiChu, MaLoaiSan, MaTinhTrang) VALUES (@Ma, @Ten, @DC, @GC, @MLS, @MTT)";
                         using (SqlCommand cmd = new SqlCommand(sqlSan, conn, trans))
                         {
@@ -173,32 +225,28 @@ namespace QuanLySan.ViewModels
                             cmd.Parameters.AddWithValue("@Ten", TenSan);
                             cmd.Parameters.AddWithValue("@DC", DiaChi ?? "");
                             cmd.Parameters.AddWithValue("@GC", GhiChu ?? "");
-                            cmd.Parameters.AddWithValue("@MLS", _mapLoaiSan[LoaiSanSelected]);
-                            cmd.Parameters.AddWithValue("@MTT", _mapTinhTrang[TinhTrangSelected]);
+                            cmd.Parameters.AddWithValue("@MLS", maLoaiSan);
+                            cmd.Parameters.AddWithValue("@MTT", maTinhTrang);
                             cmd.ExecuteNonQuery();
                         }
 
-                        // Lưu vào bảng CHITIETDATSAN (Chuẩn Database)
-                        int index = 1;
+                        // Lưu vào bảng CHITIET_GIO_SAN (đúng tên bảng trong Database)
                         foreach (var item in DsGioSan)
                         {
                             string maLoaiNgay = MapLoaiNgay[item.LoaiNgay];
+                            TryParseGio(item.GioBatDau, out TimeSpan gioBD);
+                            TryParseGio(item.GioKetThuc, out TimeSpan gioKT);
 
-                            // Tạo MaDatSan chuẩn char(12): DS + Tháng/Ngày/Giờ/Phút + index
-                            string maDatSan = "DS" + DateTime.Now.ToString("MMddHHmmss") + index.ToString("D2").Substring(0, 2);
-
-                            string sqlGio = "INSERT INTO CHITIETDATSAN (MaDatSan, MaSan, GioBatDau, GioKetThuc, MaLoaiNgay, DonGia) VALUES (@MaDat, @MaSan, @BD, @KT, @MLN, @Gia)";
+                            string sqlGio = "INSERT INTO CHITIET_GIO_SAN (MaSan, GioBatDau, GioKetThuc, MaLoaiNgay, DonGia) VALUES (@MaSan, @BD, @KT, @MLN, @Gia)";
                             using (SqlCommand cmd = new SqlCommand(sqlGio, conn, trans))
                             {
-                                cmd.Parameters.AddWithValue("@MaDat", maDatSan);
                                 cmd.Parameters.AddWithValue("@MaSan", MaSan);
-                                cmd.Parameters.AddWithValue("@BD", TimeSpan.Parse(item.GioBatDau)); // SQL Time
-                                cmd.Parameters.AddWithValue("@KT", TimeSpan.Parse(item.GioKetThuc)); // SQL Time
+                                cmd.Parameters.AddWithValue("@BD", gioBD);
+                                cmd.Parameters.AddWithValue("@KT", gioKT);
                                 cmd.Parameters.AddWithValue("@MLN", maLoaiNgay);
                                 cmd.Parameters.AddWithValue("@Gia", item.DonGia);
                                 cmd.ExecuteNonQuery();
                             }
-                            index++;
                         }
 
                         trans.Commit();
