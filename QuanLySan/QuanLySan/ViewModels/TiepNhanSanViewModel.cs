@@ -230,7 +230,7 @@ namespace QuanLySan.ViewModels
                             cmd.ExecuteNonQuery();
                         }
 
-                        // Lưu vào bảng CHITIET_GIO_SAN (đúng tên bảng trong Database)
+                        // Lưu vào bảng CHITIET_GIO_SAN
                         foreach (var item in DsGioSan)
                         {
                             string maLoaiNgay = MapLoaiNgay[item.LoaiNgay];
