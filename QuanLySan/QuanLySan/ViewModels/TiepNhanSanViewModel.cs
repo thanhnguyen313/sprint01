@@ -136,7 +136,7 @@ namespace QuanLySan.ViewModels
         }
 
         // Phát sinh mã sân đúng chuẩn char(6) của database (VD: S24599)
-        private void PhatSinhMaSan() => MaSan = "S" + new Random().Next(10000, 99999).ToString();
+        private void PhatSinhMaSan() => MaSan = "SAN" + new Random().Next(10000, 99999).ToString();
 
         private void ThucHienHuy()
         {
@@ -183,13 +183,9 @@ namespace QuanLySan.ViewModels
                         {
                             string maLoaiNgay = MapLoaiNgay[item.LoaiNgay];
 
-                            // Tạo MaDatSan chuẩn char(12): DS + Tháng/Ngày/Giờ/Phút + index
-                            string maDatSan = "DS" + DateTime.Now.ToString("MMddHHmmss") + index.ToString("D2").Substring(0, 2);
-
-                            string sqlGio = "INSERT INTO CHITIETDATSAN (MaDatSan, MaSan, GioBatDau, GioKetThuc, MaLoaiNgay, DonGia) VALUES (@MaDat, @MaSan, @BD, @KT, @MLN, @Gia)";
+                            string sqlGio = "INSERT INTO CHITIETDATSAN (MaSan, GioBatDau, GioKetThuc, MaLoaiNgay, DonGia) VALUES (@MaSan, @BD, @KT, @MLN, @Gia)";
                             using (SqlCommand cmd = new SqlCommand(sqlGio, conn, trans))
                             {
-                                cmd.Parameters.AddWithValue("@MaDat", maDatSan);
                                 cmd.Parameters.AddWithValue("@MaSan", MaSan);
                                 cmd.Parameters.AddWithValue("@BD", TimeSpan.Parse(item.GioBatDau)); // SQL Time
                                 cmd.Parameters.AddWithValue("@KT", TimeSpan.Parse(item.GioKetThuc)); // SQL Time
