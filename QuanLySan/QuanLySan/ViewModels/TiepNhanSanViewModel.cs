@@ -212,12 +212,12 @@ namespace QuanLySan.ViewModels
                 if (!TryParseGio(item.GioBatDau, out TimeSpan gioBD) ||
                     !TryParseGio(item.GioKetThuc, out TimeSpan gioKT))
                 {
-                    MessageBox.Show($"Dòng STT {item.STT + 1}: Định dạng giờ không hợp lệ (HH:mm).");
+                    MessageBox.Show($"Dòng STT {item.STT}: Định dạng giờ không hợp lệ (HH:mm).");
                     return;
                 }
                 if (!SanService.KiemTraKhungGioHopLe(gioBD, gioKT, DsGioSan, out string msg))
                 {
-                    MessageBox.Show($"Lỗi tại dòng STT {item.STT + 1}: {msg}");
+                    MessageBox.Show($"Lỗi tại dòng STT {item.STT}: {msg}");
                     return;
                 }
             }
