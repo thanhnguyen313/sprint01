@@ -152,6 +152,7 @@ namespace QuanLySan.ViewModels
             if (string.IsNullOrWhiteSpace(TenSan)) { MessageBox.Show("Vui lòng nhập tên sân!"); return; }
             if (string.IsNullOrWhiteSpace(LoaiSanSelected)) { MessageBox.Show("Vui lòng chọn Mã loại sân!"); return; }
             if (string.IsNullOrWhiteSpace(TinhTrangSelected)) { MessageBox.Show("Vui lòng chọn Tình trạng!"); return; }
+            if (string.IsNullOrWhiteSpace(DiaChi)) { MessageBox.Show("Vui lòng ghi địa chỉ!"); return; }
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
