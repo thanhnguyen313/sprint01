@@ -3,13 +3,14 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Data.SqlClient;
+using QuanLySan.Models;
 using QuanLySan.ViewModels.Base;
 
 namespace QuanLySan.ViewModels
 {
     public class DangKyHoiVienViewModel : BaseViewModel
     {
-        private string _connectionString = @"Server= localhost;Database=QLSanTheThao;Trusted_Connection=True;TrustServerCertificate=True;";
+        private string _connectionString = DatabaseConfig.ConnectionString;
 
         // Dữ liệu nhập liệu
         private string _maHoiVien = "";
@@ -80,18 +81,55 @@ namespace QuanLySan.ViewModels
                 return;
             }
 
-            // TODO: Thêm bảng HOIVIEN vào Database và implement logic lưu
-            MessageBox.Show(
-                $"Đăng ký hội viên thành công!\n\n" +
-                $"Mã HV: {MaHoiVien}\n" +
-                $"Họ tên: {TenHoiVien}\n" +
-                $"SĐT: {SDT}\n" +
-                $"Email: {Email}\n" +
-                $"Giới tính: {GioiTinh}\n" +
-                $"Loại HV: {LoaiHoiVien}",
-                "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                MessageBox.Show("Vui lòng nhập Email!", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            ThucHienLamMoi();
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Lưu thông tin Hội Viên thẳng vào bảng (Đơn giản và tối ưu)
+                        string maLoaiHV = "DO"; // Loại Đồng mặc định
+                        string sqlHV = @"INSERT INTO HOIVIEN (MaHoiVien, HoTen, SDT, Email, GioiTinh, NgayDangKyHoiVien, DiemTichLuy, MaLoaiHoiVien, GhiChu)
+                                         VALUES (@Ma, @Ten, @SDT, @Email, @GioiTinh, @Ngay, 0, @Loai, @GhiChu)";
+                        using (SqlCommand cmd = new SqlCommand(sqlHV, conn, trans)) {
+                            cmd.Parameters.AddWithValue("@Ma", MaHoiVien);
+                            cmd.Parameters.AddWithValue("@Ten", TenHoiVien);
+                            cmd.Parameters.AddWithValue("@SDT", SDT);
+                            cmd.Parameters.AddWithValue("@Email", Email);
+                            cmd.Parameters.AddWithValue("@GioiTinh", GioiTinh);
+                            cmd.Parameters.AddWithValue("@Ngay", NgayDangKy ?? DateTime.Now);
+                            cmd.Parameters.AddWithValue("@Loai", maLoaiHV);
+                            cmd.Parameters.AddWithValue("@GhiChu", GhiChu ?? "");
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Nếu không có lỗi gì thì Commit transaction (lưu chính thức)
+                        trans.Commit();
+                        
+                        MessageBox.Show(
+                            $"Đăng ký hội viên thành công!\n\n" +
+                            $"Mã HV: {MaHoiVien}\n" +
+                            $"Họ tên: {TenHoiVien}\n" +
+                            $"SĐT: {SDT}\n" +
+                            $"Email: {Email}",
+                            "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        ThucHienLamMoi();
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        MessageBox.Show("Lỗi lưu dữ liệu: " + ex.Message + "\n(Lưu ý: SĐT hoặc Email có thể đã tồn tại!)", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
         }
     }
 }
