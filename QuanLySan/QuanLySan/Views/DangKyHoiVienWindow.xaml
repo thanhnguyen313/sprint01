@@ -168,7 +168,7 @@
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="Email" Style="{StaticResource FieldLabel}"/>
-                            <TextBox Text="{Binding Email}" Style="{StaticResource PlaceholderTextBox}" Tag="nva@gmail.com"/>
+                            <TextBox Text="{Binding Email}" Style="{StaticResource PlaceholderTextBox}" Tag="VD: nva@gmail.com"/>
                             <TextBlock Text="⚠ Email đã tồn tại hoặc không hợp lệ" Foreground="{StaticResource ErrorBrush}" 
                                        FontSize="11" Margin="0,3,0,0" Visibility="Collapsed"/>
                         </StackPanel>
